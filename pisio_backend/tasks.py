@@ -15,5 +15,3 @@ app.conf.beat_schedule = {
         'schedule': timedelta(minutes=10),
     },
 }
-
-#
