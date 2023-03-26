@@ -70,7 +70,7 @@ class ResourceItem(models.Model):
     name=models.CharField(max_length=45)
     number=models.IntegerField()
     price=models.DecimalField(max_digits=6,decimal_places=2)
-    location=models.ForeignKey(Location,on_delete=models.CASCADE)
+    location=models.ForeignKey(Location,on_delete=models.CASCADE,related_name='resource_items')
 
     class Meta:
         db_table='resource_item'
@@ -109,7 +109,7 @@ class ReservedItem(models.Model):
 class Room(models.Model):
     name=models.CharField(max_length=45)
     description=models.CharField(max_length=45)
-    location=models.ForeignKey(Location,on_delete=models.CASCADE)
+    location=models.ForeignKey(Location,on_delete=models.CASCADE,related_name='rooms')
     event=models.ForeignKey(Event,on_delete=models.SET_NULL,null=True,blank=True)
     class Meta:
         db_table='room'

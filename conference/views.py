@@ -8,24 +8,24 @@ from .serializer import *
 
 class EventTypeAPIView(ListAPIView):
     queryset = EventType.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = EventTypeSerializer
 
 
 class ResourceItemAPIView(UpdateAPIView):
     queryset = ResourceItem.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = ResourceItemSerializer
 
 
 class RoomAPIView(UpdateAPIView):
     queryset = Room.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = RoomSerializer
 
 class LocationListAPIView(ListAPIView):
     queryset = Location.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = LocationSerializer
 
 class LocationAPIView(UpdateAPIView):
@@ -36,7 +36,7 @@ class LocationAPIView(UpdateAPIView):
 
 class ConferenceListAPIView(ListAPIView):
     queryset = Conference.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = ConferenceSerializer
 
     def get_queryset(self):
@@ -50,7 +50,7 @@ class ConferenceCreateAPIView(CreateAPIView):
 
 class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Conference.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = ConferenceItemSerializer
 
     def get_serializer_class(self):
@@ -60,16 +60,16 @@ class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
 
 class EventListAPIView(ListAPIView):
     queryset = Event.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = EventSerializer
 
 class EventCreateAPIView(CreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = EventItemSerializer
 
 class EventAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = EventItemSerializer
 
     def get_serializer_class(self):
@@ -78,7 +78,7 @@ class EventAPIView(RetrieveUpdateDestroyAPIView):
         return EventSerializer
 
 class RatingAPIView(CreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     serializer_class = RatingItemSerializer
 
 
