@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.utils import timezone
 
-from conference.models import Conference, Event, Room
+from conference.models import Conference, Event, Room, Location
 
 
 @shared_task
@@ -34,4 +34,14 @@ def update_event_status():
 
                 reserved_item.delete()
 
+
+@shared_task
+def update_occupied_status():
+    locations = Location.objects.all()
+    for location in locations:
+        rooms = location.rooms.all()
+        occupied = all(room.event is not None for room in rooms)
+        if occupied != location.occupied:
+            location.occupied = occupied
+            location.save()
 
