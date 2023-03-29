@@ -4,16 +4,16 @@ from django.utils import timezone
 from conference.models import Conference, Event, Room, Location
 
 
-@shared_task
+@shared_task(name='conf')
 def update_conference_status():
     now = timezone.now()
-    for conference in Conference.objects.filter(is_finished=False):
-        if now >= conference.end:
-            conference.is_finished = True
+    for conference in Conference.objects.all():
+        #if now >= conference.end:
+            conference.name = "xddd"
             conference.save()
 
-
-@shared_task
+update_conference_status.delay()
+@shared_task(name='event')
 def update_event_status():
     now = timezone.now()
     for event in Event.objects.filter(is_finished=False):
@@ -35,7 +35,8 @@ def update_event_status():
                 reserved_item.delete()
 
 
-@shared_task
+update_event_status.delay()
+@shared_task(name='status')
 def update_occupied_status():
     locations = Location.objects.all()
     for location in locations:
@@ -44,4 +45,7 @@ def update_occupied_status():
         if occupied != location.occupied:
             location.occupied = occupied
             location.save()
+
+
+update_occupied_status.delay()
 

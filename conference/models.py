@@ -88,7 +88,7 @@ class Event(models.Model):
     url=models.CharField(max_length=45,null=True,blank=True)
     location=models.ForeignKey(Location,null=True,blank=True,on_delete=models.SET_NULL)
     event_type=models.ForeignKey(EventType,models.DO_NOTHING)
-    conference=models.ForeignKey(Conference,on_delete=models.CASCADE)
+    conference=models.ForeignKey(Conference,on_delete=models.CASCADE,related_name='events')
     visitors=models.ManyToManyField(User,blank=True)
     reserved_items=models.ManyToManyField(ResourceItem,through='ReservedItem')
 

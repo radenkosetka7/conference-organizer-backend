@@ -54,7 +54,7 @@ class EventSerializer(serializers.ModelSerializer):
     attendees=UserSerializer(many=True,read_only=True)
     class Meta:
         model=Event
-        fields=('name','start','end','finished','url','attendees')
+        fields=('name','start','end','finished','url','attendees','event_type','location','attendees')
 
 class EventItemSerializer(serializers.ModelSerializer):
 
@@ -64,10 +64,10 @@ class EventItemSerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
 
-    username=UserSerializer(read_only=True)
+    user=UserSerializer()
     class Meta:
         model=Rating
-        fields=('stars','comment','date')
+        fields=('stars','comment','date','user')
 
 class RatingItemSerializer(serializers.ModelSerializer):
 
@@ -75,14 +75,23 @@ class RatingItemSerializer(serializers.ModelSerializer):
         model=Rating
         fields=('stars','comment','date','user','conference')
 
+
+class ReservedItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReservedItem
+        fields=('event','resource_item','quantity')
+
+
 class ConferenceSerializer(serializers.ModelSerializer):
 
     location=LocationSerializer()
     events=EventSerializer(many=True)
     ratings=RatingSerializer(many=True,read_only=True)
+    creator=UserSerializer()
     class Meta:
         model=Conference
-        fields=('name','start','end','finished','url')
+        fields=('name','start','end','finished','creator','url','location','events','ratings')
 
 
 class ConferenceItemSerializer(serializers.ModelSerializer):
@@ -91,3 +100,18 @@ class ConferenceItemSerializer(serializers.ModelSerializer):
         model=Conference
         fields=('name','start','end','finished','url','creator','location')
 
+
+class EventVisitorSerializer(serializers.ModelSerializer):
+    visitors = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+
+class EventVisitorGETSerializer(serializers.ModelSerializer):
+    conference = ConferenceSerializer()
+
+    class Meta:
+        model = Event
+        fields = ['name', 'conference']

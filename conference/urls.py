@@ -2,7 +2,7 @@ from django.urls import path
 
 from conference.views import EventTypeAPIView, RoomAPIView, ResourceItemAPIView, LocationListAPIView, LocationAPIView, \
     ConferenceListAPIView, ConferenceCreateAPIView, ConferenceAPIView, EventAPIView, EventListAPIView, \
-    EventCreateAPIView, RatingAPIView,ConferenceFilterView,ConferenceSearchView
+    EventCreateAPIView, RatingAPIView, ReservedItemsAPIView, EventVisitorCreateAPIView, UserEventsListView
 
 urlpatterns = [
     path('event_types/',EventTypeAPIView.as_view(),name='event_type_list'),
@@ -17,7 +17,9 @@ urlpatterns = [
     path('events/list',EventListAPIView.as_view(),name='events_list'),
     path('events/',EventCreateAPIView.as_view(),name='event_create'),
     path('rating/',RatingAPIView.as_view(),name='rating_create'),
-    path('conferences/search/',ConferenceSearchView.as_view(),name='conferences_search'),
-    path('conferences/filter/',ConferenceFilterView.as_view(),name='conferences_filter'),
+    path('reserved_items/',ReservedItemsAPIView.as_view(),name='reserved_items'),
+    path('event-visitors/', EventVisitorCreateAPIView.as_view(), name='event-visitors-create'),
+    path('user_events/', UserEventsListView.as_view(), name='user_events_list'),
+
 
 ]
