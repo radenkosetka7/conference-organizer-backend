@@ -6,11 +6,7 @@ from conference.models import Conference, Event, Room, Location
 
 @shared_task(name='conf')
 def update_conference_status():
-    now = timezone.now()
-    for conference in Conference.objects.all():
-        #if now >= conference.end:
-            conference.name = "xddd"
-            conference.save()
+    print("World hello")
 
 update_conference_status.delay()
 @shared_task(name='event')
