@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from rest_framework.generics import *
-from .models import *
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated
 from .serializer import *
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
@@ -10,24 +8,24 @@ from rest_framework.filters import SearchFilter
 
 class EventTypeAPIView(ListAPIView):
     queryset = EventType.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventTypeSerializer
 
 
 class ResourceItemAPIView(UpdateAPIView):
     queryset = ResourceItem.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ResourceItemSerializer
 
 
 class RoomAPIView(UpdateAPIView):
     queryset = Room.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = RoomSerializer
 
 class LocationListAPIView(ListAPIView):
     queryset = Location.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = LocationSerializer
     filter_backends = [SearchFilter]
     search_fields = ['name']
@@ -41,7 +39,7 @@ class LocationAPIView(UpdateAPIView):
 
 class ConferenceListAPIView(ListAPIView):
     queryset = Conference.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceSerializer
     filter_backends = [SearchFilter,DjangoFilterBackend]
     filterset_fields = ['start', 'end', 'finished','url']
@@ -50,7 +48,7 @@ class ConferenceListAPIView(ListAPIView):
 
 
 class ConferenceCreateAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceItemSerializer
 
     def perform_create(self, serializer):
@@ -58,7 +56,7 @@ class ConferenceCreateAPIView(CreateAPIView):
 
 class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Conference.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceItemSerializer
 
     def get_serializer_class(self):
@@ -68,16 +66,16 @@ class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
 
 class EventListAPIView(ListAPIView):
     queryset = Event.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
 
 class EventCreateAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventItemSerializer
 
 class EventAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventItemSerializer
 
     def get_serializer_class(self):
@@ -86,15 +84,15 @@ class EventAPIView(RetrieveUpdateDestroyAPIView):
         return EventSerializer
 
 class RatingAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = RatingItemSerializer
 
 class ReservedItemsAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = ReservedItemSerializer
 
 class EventVisitorCreateAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
 
 class UserEventsListView(ListAPIView):
