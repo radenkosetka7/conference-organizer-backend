@@ -11,7 +11,7 @@ class RegisterAPIView(CreateAPIView):
     serializer_class = RegisterUserSerializer
 
 
-class UserIdentityAPIView(RetrieveAPIView):
+class UserIdentityAPIView(RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserIdentity
 
@@ -30,3 +30,13 @@ class ChangePasswordAPIView(UpdateAPIView):
 
 class MyPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = '/users/login'
+
+
+class UserStaffListAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserIdentity
+    filterset_fields = ['is_staff']
+
+    def get_object(self):
+        return self.request.user
+

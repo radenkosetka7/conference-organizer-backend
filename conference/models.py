@@ -40,6 +40,7 @@ class Conference(models.Model):
     start=models.DateTimeField()
     end=models.DateTimeField()
     creator=models.ForeignKey(User,on_delete=models.CASCADE,related_name='created_conferences')
+    moderator=models.ForeignKey(User,on_delete=models.CASCADE,related_name='conference_moderator',default=None)
     location=models.ForeignKey(Location,null=True,blank=True,on_delete=models.SET_NULL)
     rating=models.ManyToManyField(User,through='Rating')
 

@@ -35,10 +35,7 @@ class UserIdentity(serializers.ModelSerializer):
     class Meta:
         model=User
         fields = (
-            'first_name', 'last_name', 'username', 'email', 'date_joined', 'is_active',
-            'is_staff', 'is_superuser'
-        )
-
+            'first_name', 'last_name', 'username', 'email')
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
     password=serializers.CharField(write_only=True,required=True,validators=[validate_password])
