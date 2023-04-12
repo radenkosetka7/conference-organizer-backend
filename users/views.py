@@ -1,5 +1,6 @@
 import rest_framework.permissions
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import *
 from rest_framework.permissions import *
 from .serializer import *
@@ -35,6 +36,7 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 class UserStaffListAPIView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserIdentity
+    filter_backends=[DjangoFilterBackend]
     filterset_fields = ['is_staff']
 
     def get_object(self):
