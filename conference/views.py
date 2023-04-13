@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from .serializer import *
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+
+
 # Create your views here.
 
 
@@ -23,6 +25,7 @@ class RoomAPIView(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = RoomSerializer
 
+
 class LocationListAPIView(ListAPIView):
     queryset = Location.objects.all()
     permission_classes = (IsAuthenticated,)
@@ -41,10 +44,35 @@ class ConferenceListAPIView(ListAPIView):
     queryset = Conference.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceSerializer
-    filter_backends = [SearchFilter,DjangoFilterBackend]
-    filterset_fields = ['start', 'end', 'finished','url']
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['start', 'end', 'finished', 'url']
     search_fields = ['name']
 
+
+class ConferenceListModeratorAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ConferenceSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['start', 'end', 'finished', 'url']
+    search_fields = ['name']
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Conference.objects.filter(moderator=user)
+        return queryset
+
+
+class ConferenceListOraganizerAPIView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ConferenceSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['start', 'end', 'finished', 'url']
+    search_fields = ['name']
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Conference.objects.filter(creator=user)
+        return queryset
 
 
 class ConferenceCreateAPIView(CreateAPIView):
@@ -53,6 +81,7 @@ class ConferenceCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
 
 class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Conference.objects.all()
@@ -64,14 +93,17 @@ class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
             return ConferenceItemSerializer
         return ConferenceSerializer
 
+
 class EventListAPIView(ListAPIView):
     queryset = Event.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
 
+
 class EventCreateAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventItemSerializer
+
 
 class EventAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
@@ -83,17 +115,21 @@ class EventAPIView(RetrieveUpdateDestroyAPIView):
             return EventItemSerializer
         return EventSerializer
 
+
 class RatingAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = RatingItemSerializer
+
 
 class ReservedItemsAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ReservedItemSerializer
 
+
 class EventVisitorCreateAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
+
 
 class UserEventsListView(ListAPIView):
     serializer_class = EventSerializer

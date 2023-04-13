@@ -5,100 +5,95 @@ from users.serializer import UserIdentity
 
 
 class EventTypeSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=EventType
-        fields='__all__'
+        model = EventType
+        fields = '__all__'
 
 
 class RoomSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=Room
-        fields=('name','description','event')
+        model = Room
+        fields = ('name', 'description', 'event')
 
 
 class ResourceItemSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=ResourceItem
-        fields=('name','number','price')
+        model = ResourceItem
+        fields = ('name', 'number', 'price')
+
 
 class LocationSerializer(serializers.ModelSerializer):
+    rooms = RoomSerializer(many=True)
+    resource_items = ResourceItemSerializer(many=True)
 
-    rooms=RoomSerializer(many=True)
-    resource_items=ResourceItemSerializer(many=True)
     class Meta:
-        model=Location
-        fields='__all__'
+        model = Location
+        fields = '__all__'
+
 
 class LocationItemSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=Location
-        fields=('id','name','address','occupied')
+        model = Location
+        fields = ('id', 'name', 'address', 'occupied')
+
 
 class UserSerializer(serializers.ModelSerializer):
-
-
     class Meta:
-        model=User
-        fields=('username','first_name','last_name')
-
+        model = User
+        fields = ('username', 'first_name', 'last_name')
 
 
 class EventSerializer(serializers.ModelSerializer):
+    location = LocationSerializer()
+    event_type = EventTypeSerializer()
+    attendees = UserSerializer(many=True, read_only=True)
 
-    location=LocationSerializer()
-    event_type=EventTypeSerializer()
-    attendees=UserSerializer(many=True,read_only=True)
     class Meta:
-        model=Event
-        fields=('name','start','end','finished','url','attendees','event_type','location','attendees')
+        model = Event
+        fields = ('name', 'start', 'end', 'finished', 'url', 'attendees', 'event_type', 'location', 'attendees')
+
 
 class EventItemSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=Event
-        fields=('name','start','end','finished','url','conference','event_type','location')
+        model = Event
+        fields = ('name', 'start', 'end', 'finished', 'url', 'conference', 'event_type', 'location')
+
 
 class RatingSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
 
-    user=UserSerializer()
     class Meta:
-        model=Rating
-        fields=('stars','comment','date','user')
+        model = Rating
+        fields = ('stars', 'comment', 'date', 'user')
+
 
 class RatingItemSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=Rating
-        fields=('stars','comment','date','user','conference')
+        model = Rating
+        fields = ('stars', 'comment', 'date', 'user', 'conference')
 
 
 class ReservedItemSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ReservedItem
-        fields=('event','resource_item','quantity')
+        fields = ('event', 'resource_item', 'quantity')
 
 
 class ConferenceSerializer(serializers.ModelSerializer):
+    location = LocationSerializer()
+    events = EventSerializer(many=True)
+    ratings = RatingSerializer(many=True, read_only=True)
+    creator = UserSerializer()
 
-    location=LocationSerializer()
-    events=EventSerializer(many=True)
-    ratings=RatingSerializer(many=True,read_only=True)
-    creator=UserSerializer()
     class Meta:
-        model=Conference
-        fields=('name','start','end','finished','creator','url','location','events','ratings')
+        model = Conference
+        fields = ('name', 'start', 'end', 'finished', 'creator', 'url', 'location', 'events', 'ratings', 'moderator')
 
 
 class ConferenceItemSerializer(serializers.ModelSerializer):
-
     class Meta:
-        model=Conference
-        fields=('name','start','end','finished','url','creator','location')
+        model = Conference
+        fields = ('name', 'start', 'end', 'finished', 'url', 'creator', 'location', 'moderator')
 
 
 class EventVisitorSerializer(serializers.ModelSerializer):

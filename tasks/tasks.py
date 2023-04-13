@@ -21,11 +21,10 @@ def update_event_status(self):
             event.finished = True
             event.save()
 
-
         if event.url:
-            room=Room.objects.filter(event=event).first()
+            room = Room.objects.filter(event=event).first()
             if room:
-                room.event=None
+                room.event = None
                 room.save()
 
             for reserved_item in event.reserved_items.all():
@@ -44,5 +43,3 @@ def update_occupied_status(self):
         if occupied != location.occupied:
             location.occupied = occupied
             location.save()
-
-

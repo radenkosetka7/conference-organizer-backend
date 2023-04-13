@@ -5,6 +5,8 @@ from rest_framework.generics import *
 from rest_framework.permissions import *
 from .serializer import *
 from django.contrib.auth.views import PasswordResetConfirmView
+
+
 # Create your views here.
 
 class RegisterAPIView(CreateAPIView):
@@ -19,8 +21,8 @@ class UserIdentityAPIView(RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-class ChangePasswordAPIView(UpdateAPIView):
 
+class ChangePasswordAPIView(UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
@@ -36,9 +38,8 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 class UserStaffListAPIView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserIdentity
-    filter_backends=[DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_staff']
 
     def get_object(self):
         return self.request.user
-
