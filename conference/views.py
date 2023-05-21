@@ -125,11 +125,19 @@ class ReservedItemsAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ReservedItemSerializer
 
+class ReservedItemsChangeAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ReservedItemChangeSerializer
+
+
 class EventVisitorCreateAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventVisitorCreateSerializer
 
 
+class EventVisitorDeleteAPIView(DestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = EventVisitorDeleteSerializer
 class UserEventsListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceVisitorSerializer

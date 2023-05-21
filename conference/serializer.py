@@ -107,6 +107,10 @@ class ReservedItemSerializer(serializers.ModelSerializer):
         reserved_item = ReservedItem.objects.create(**validated_data)
         return reserved_item
 
+class ReservedItemChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReservedItem
+        fields = ('event', 'resource_item', 'quantity')
 
 class ConferenceSerializer(serializers.ModelSerializer):
     location = LocationItemSerializer()
@@ -131,7 +135,11 @@ class EventVisitorCreateSerializer(serializers.ModelSerializer):
         model=EventVisitor
         fields=('event','visitor')
 
+class EventVisitorDeleteSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model=EventVisitor
+        fields=('id','event','visitor')
 class EventModeratorSerializer(serializers.ModelSerializer):
     location = LocationItemSerializer()
     event_type = EventTypeSerializer()
