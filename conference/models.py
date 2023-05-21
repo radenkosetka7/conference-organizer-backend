@@ -13,7 +13,6 @@ from django.utils import timezone
 class Location(models.Model):
     name = models.CharField(max_length=45)
     address = models.CharField(max_length=45)
-    occupied = models.BooleanField()
 
     class Meta:
         db_table = 'location'
@@ -39,7 +38,6 @@ class Conference(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_conferences')
-    moderator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conference_moderator', default=None)
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     rating = models.ManyToManyField(User, through='Rating')
 
@@ -78,6 +76,17 @@ class ResourceItem(models.Model):
         return self.name
 
 
+class Room(models.Model):
+    name = models.CharField(max_length=45)
+    description = models.CharField(max_length=45)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='rooms')
+
+    class Meta:
+        db_table = 'room'
+
+    def __str__(self):
+        return self.name
+
 class Event(models.Model):
     name = models.CharField(max_length=45)
     start = models.DateTimeField()
@@ -87,8 +96,8 @@ class Event(models.Model):
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     event_type = models.ForeignKey(EventType, models.DO_NOTHING)
     conference = models.ForeignKey(Conference, on_delete=models.CASCADE, related_name='events')
-    visitors = models.ManyToManyField(User, blank=True)
-    reserved_items = models.ManyToManyField(ResourceItem, through='ReservedItem')
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)
+    moderator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='event_moderator', default=None)
 
     class Meta:
         db_table = 'event'
@@ -96,6 +105,13 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+
+class EventVisitor(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    visitor = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'event_visitor'
 
 class ReservedItem(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
@@ -106,14 +122,3 @@ class ReservedItem(models.Model):
         db_table = 'reserved_item'
 
 
-class Room(models.Model):
-    name = models.CharField(max_length=45)
-    description = models.CharField(max_length=45)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='rooms')
-    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
-
-    class Meta:
-        db_table = 'room'
-
-    def __str__(self):
-        return self.name

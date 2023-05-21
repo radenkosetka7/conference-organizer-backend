@@ -36,10 +36,9 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 
 
 class UserStaffListAPIView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    queryset = User.objects.filter(is_staff=True,is_superuser=False)
+    permission_classes = (IsAdminUser,)
     serializer_class = UserIdentity
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_staff']
 
-    def get_object(self):
-        return self.request.user

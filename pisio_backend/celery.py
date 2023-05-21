@@ -28,9 +28,5 @@ app.conf.beat_schedule = {
     'update-event-status': {
         'task': 'tasks.tasks.update_event_status',
         'schedule': timedelta(minutes=60),
-    },
-    'update-location-status': {
-        'task': 'tasks.tasks.update_occupied_status',
-        'schedule': timedelta(minutes=1)
     }
 }

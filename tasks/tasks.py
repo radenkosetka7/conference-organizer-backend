@@ -22,24 +22,10 @@ def update_event_status(self):
             event.save()
 
         if event.url:
-            room = Room.objects.filter(event=event).first()
-            if room:
-                room.event = None
-                room.save()
 
-            for reserved_item in event.reserved_items.all():
+            for reserved_item in event.reserveditem_set.all():
                 reserved_item.resource_item.number += reserved_item.quantity
                 reserved_item.resource_item.save()
 
                 reserved_item.delete()
 
-
-@shared_task(bind=True)
-def update_occupied_status(self):
-    locations = Location.objects.all()
-    for location in locations:
-        rooms = location.rooms.all()
-        occupied = all(room.event is not None for room in rooms)
-        if occupied != location.occupied:
-            location.occupied = occupied
-            location.save()
