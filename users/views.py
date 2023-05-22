@@ -39,6 +39,4 @@ class UserStaffListAPIView(ListAPIView):
     queryset = User.objects.filter(is_staff=True,is_superuser=False)
     permission_classes = (IsAdminUser,)
     serializer_class = UserIdentity
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['is_staff']
 

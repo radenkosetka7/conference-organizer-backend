@@ -110,7 +110,7 @@ class ReservedItemSerializer(serializers.ModelSerializer):
 class ReservedItemChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReservedItem
-        fields = ('event', 'resource_item', 'quantity')
+        fields = ('id','event', 'resource_item', 'quantity')
 
 class ConferenceSerializer(serializers.ModelSerializer):
     location = LocationItemSerializer()
