@@ -33,7 +33,7 @@ class UserIdentity(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'first_name', 'last_name', 'username', 'email')
+            'first_name', 'last_name', 'username', 'email', 'is_superuser', 'is_staff')
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
