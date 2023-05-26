@@ -13,8 +13,8 @@ from django.core.mail import send_mail
 def user_status_changed(sender, instance, created, **kwargs):
     if not created and instance.is_active:
         send_mail(
-            'Vaš račun je aktiviran',
-            'Poštovani {0},\n\nVaš račun je sada aktivan.\n\nHvala Vam što koristite našu aplikaciju.'.format(
+            'Your account is now active',
+            'Respected {0},\n\n Your account is now active.\n\nThank You for using our application.'.format(
                 instance.first_name),
             'noreply@example.com',
             [instance.email],
