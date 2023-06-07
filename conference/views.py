@@ -41,32 +41,45 @@ class LocationListAPIView(ListAPIView):
 
 
 class ConferenceListAPIView(ListAPIView):
-    queryset = Conference.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    filterset_fields = ['start', 'end', 'finished', 'url']
+    filterset_fields = ['finished']
     search_fields = ['name']
+
+    def get_queryset(self):
+        queryset = Conference.objects.all()
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+        if start_date and end_date:
+            queryset = Conference.objects.filter(start__range=(start_date, end_date))
+
+        return queryset
 
 
 class ConferenceListModeratorAPIView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceModeratorSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    filterset_fields = ['start', 'end', 'finished', 'url']
+    filterset_fields = ['finished']
     search_fields = ['name']
 
     def get_queryset(self):
         user=self.request.user
-        return Conference.objects.filter(events__moderator=user)
+        queryset= Conference.objects.filter(events__moderator=user)
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+        if start_date and end_date:
+            queryset = Conference.objects.filter(start__range=(start_date, end_date))
 
+        return queryset
 
 
 class ConferenceListOraganizerAPIView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    filterset_fields = ['start', 'end', 'finished', 'url']
+    filterset_fields = ['finished']
     search_fields = ['name']
 
     def get_queryset(self):
@@ -142,9 +155,15 @@ class UserEventsListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ConferenceVisitorSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    filterset_fields = ['start', 'end', 'finished', 'url']
+    filterset_fields = ['finished']
     search_fields = ['name']
 
     def get_queryset(self):
         user = self.request.user
-        return Conference.objects.filter(events__eventvisitor__visitor=user).distinct()
+        queryset= Conference.objects.filter(events__eventvisitor__visitor=user).distinct()
+        start_date = self.request.query_params.get('start_date')
+        end_date = self.request.query_params.get('end_date')
+        if start_date and end_date:
+            queryset = Conference.objects.filter(start__range=(start_date, end_date))
+
+        return queryset
