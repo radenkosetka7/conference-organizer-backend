@@ -38,5 +38,5 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 class UserStaffListAPIView(ListAPIView):
     queryset = User.objects.filter(is_staff=True,is_superuser=False)
     permission_classes = (IsAdminUser,)
-    serializer_class = UserIdentity
+    serializer_class = StaffSerializer
 

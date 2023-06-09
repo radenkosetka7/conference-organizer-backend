@@ -93,7 +93,7 @@ class ConferenceCreateAPIView(CreateAPIView):
     serializer_class = ConferenceItemSerializer
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        serializer.save(creator=self.request.user,finished=0)
 
 
 class ConferenceAPIView(RetrieveUpdateDestroyAPIView):
@@ -117,6 +117,9 @@ class EventCreateAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EventItemSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(finished=0)
+
 
 class EventAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
@@ -133,12 +136,16 @@ class RatingAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = RatingItemSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user,date=datetime.now())
+
 
 class ReservedItemsAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ReservedItemSerializer
 
 class ReservedItemsChangeAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = ReservedItem.objects.all();
     permission_classes = (IsAuthenticated,)
     serializer_class = ReservedItemChangeSerializer
 

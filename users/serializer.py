@@ -65,3 +65,10 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id','first_name', 'last_name', 'username', 'email', 'is_superuser', 'is_staff')
