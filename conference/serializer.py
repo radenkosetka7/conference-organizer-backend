@@ -1,6 +1,9 @@
 from rest_framework import serializers
 
 from conference.models import *
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+
 from users.serializer import UserIdentity
 
 
@@ -125,7 +128,7 @@ class ReservedItemChangeSerializer(serializers.ModelSerializer):
         resource_item.number += item
         resource_item.number -= quantity
         resource_item.save()
-        instance.quantity=quantity;
+        instance.quantity=quantity
         instance.save()
         return instance
 
@@ -170,6 +173,16 @@ class EventModeratorSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'name', 'start', 'end', 'finished', 'url', 'room', 'event_type', 'location',
                   'event_visitors', 'reserved_items')
+
+    @receiver(pre_delete, sender=Event)
+    def edit_reserved_items(sender, instance, **kwargs):
+        if instance.finished == 0:
+            reserved_items = instance.reserveditem_set.all()
+            for reserved_item in reserved_items:
+                resource_item = reserved_item.resource_item
+                resource_item.number += reserved_item.quantity
+                resource_item.save()
+
 
 
 class ConferenceModeratorSerializer(serializers.ModelSerializer):

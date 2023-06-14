@@ -34,7 +34,7 @@ class EventType(models.Model):
 class Conference(models.Model):
     name = models.CharField(max_length=45)
     url = models.CharField(max_length=45, null=True, blank=True)
-    finished = models.BooleanField()
+    finished = models.SmallIntegerField()
     start = models.DateTimeField()
     end = models.DateTimeField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_conferences')
@@ -43,7 +43,7 @@ class Conference(models.Model):
 
     class Meta:
         db_table = 'conference'
-        ordering = ['-start']
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -91,7 +91,7 @@ class Event(models.Model):
     name = models.CharField(max_length=45)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    finished = models.BooleanField()
+    finished = models.SmallIntegerField()
     url = models.CharField(max_length=45, null=True, blank=True)
     location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     event_type = models.ForeignKey(EventType, models.DO_NOTHING)
