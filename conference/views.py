@@ -169,7 +169,7 @@ class UserEventsListView(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset= Conference.objects.filter(events__eventvisitor__visitor=user).distinct()
+        queryset= Conference.objects.filter(events__eventvisitor__visitor=user)
         start_date = self.request.query_params.get('start_date')
         end_date = self.request.query_params.get('end_date')
         if start_date and end_date:
