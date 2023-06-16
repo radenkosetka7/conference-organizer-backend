@@ -4,7 +4,7 @@ from conference.views import EventTypeAPIView, ResourceItemAPIView, LocationList
     ConferenceListAPIView, ConferenceCreateAPIView, ConferenceAPIView, EventAPIView, EventListAPIView, \
     EventCreateAPIView, RatingAPIView, ReservedItemsAPIView, EventVisitorCreateAPIView, UserEventsListView, \
     ConferenceListModeratorAPIView, ConferenceListOraganizerAPIView, ReservedItemsChangeAPIView, \
-    EventVisitorDeleteAPIView
+    EventVisitorDeleteAPIView, VisitorRetrieveAPIView
 
 urlpatterns = [
     path('event_types/', EventTypeAPIView.as_view(), name='event_type_list'),
@@ -26,5 +26,6 @@ urlpatterns = [
     path('user_events/', UserEventsListView.as_view(), name='user_events_list'),
     path('conferences/moderator/', ConferenceListModeratorAPIView.as_view(), name='conferences_moderator'),
     path('conferences/organizer/', ConferenceListOraganizerAPIView.as_view(), name='conferences_organizer'),
+    path('visitor/', VisitorRetrieveAPIView.as_view(), name='visitor-retrieve'),
 
 ]

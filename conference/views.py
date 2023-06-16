@@ -158,6 +158,7 @@ class EventVisitorCreateAPIView(CreateAPIView):
 
 
 class EventVisitorDeleteAPIView(DestroyAPIView):
+    queryset = EventVisitor.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = EventVisitorDeleteSerializer
 class UserEventsListView(ListAPIView):
@@ -175,4 +176,16 @@ class UserEventsListView(ListAPIView):
         if start_date and end_date:
             queryset = Conference.objects.filter(start__range=(start_date, end_date))
 
+        return queryset
+
+
+class VisitorRetrieveAPIView(ListAPIView):
+    queryset = EventVisitor.objects.all()
+    serializer_class = EventVisitorGetSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        event = self.request.query_params.get('event')
+        visitor = self.request.query_params.get('visitor')
+        queryset=EventVisitor.objects.filter(event=event, visitor=visitor)
         return queryset
