@@ -147,7 +147,7 @@ class ConferenceSerializer(serializers.ModelSerializer):
 class ConferenceItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conference
-        fields = ('id', 'name', 'start', 'end', 'url', 'location')
+        fields = ('id', 'name', 'start', 'end', 'url', 'location','finished')
 
 
 class EventVisitorCreateSerializer(serializers.ModelSerializer):

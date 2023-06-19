@@ -56,6 +56,8 @@ class ConferenceListAPIView(ListAPIView):
         if start_date and end_date:
             queryset = Conference.objects.filter(start__range=(start_date, end_date))
 
+        queryset = queryset.exclude(finished=3)
+
         return queryset
 
 
